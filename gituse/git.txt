@@ -21,4 +21,13 @@
 10, upload modify
 	git commit -m "xx "
 	git push
+11, create branch
+	git brance brance_name
+12, view branch
+	git branch
+13, switch branch
+	git checkout branch_name
+14, merge brance
+	git merge -m "merge branch" brance_name
+	//there is no crach file
 
