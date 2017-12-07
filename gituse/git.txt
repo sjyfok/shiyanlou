@@ -11,6 +11,7 @@
 6, check
 	git diff 
 	git diff --cached
+	git diff branch_name1 branch_name2  //compare two branchs
 7, put in
 	git commit -m  "xxx"
 	or git commit -a -m "xxxx"
@@ -36,4 +37,6 @@
 	git branch -D branch_name //del force
 16, back 
 	git reset --hard HEAD^
+17, check the file in the branch is modified
+	git diff branch_name --stat
 
