@@ -27,7 +27,13 @@
 	git branch
 13, switch branch
 	git checkout branch_name
-14, merge brance
+14, merge branch
 	git merge -m "merge branch" brance_name
 	//there is no crach file
+	if there is a crach edit the auto gen file.then git add and commit
+15, del branch
+	git branch -d branch_name //del the merged branch
+	git branch -D branch_name //del force
+16, back 
+	git reset --hard HEAD^
 
