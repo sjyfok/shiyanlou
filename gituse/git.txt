@@ -1,0 +1,17 @@
+1. make a ner dir
+	mkdir dirname
+2, in the dir
+	cd dirname
+3, create
+	git init
+4, check the status
+	git status
+5, append file
+	git add git.txt
+6, check
+	git diff 
+	git diff --cached
+7, put in
+	git commit -m  "xxx"
+	or git commit -a -m "xxxx"
+
