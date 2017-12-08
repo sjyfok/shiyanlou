@@ -1,0 +1,4 @@
+1, get keyword
+	$python3
+	>>help
+	>>keywords
