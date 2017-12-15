@@ -1,34 +1,47 @@
-#!/usr/bin/env	python3
+#!/usr/bin/env python3
+import sys
+from collections import Counter
+
 
 class Person(object):
-	def __init__(self, name):
-		self.name = name
+	def __init__(self,  grade):
+		self.grade = grade
+	
+	def get_grade(self) :
+		return self.grade
 
-	def get_details(self):
-		return self.name
 
 class Student(Person):
-	def __init__(self, name, branch, year):
-		Person.__init__(self, name)
-		self.branch = branch
-		self.year = year
+	def __init__(self, grade):
+        	Person.__init__(self, grade)
 
-	def get_details(self):
-		return "{} studies {} and is in {} year.".format(self.name, self.branch, self.year)
+	def get_grade(self):
+		print("")
 
 class Teacher(Person):
-	def __init__(self, name, papers):
-		Person.__init__(self, name)
-		self.papers = papers
+	def __init__(self, grade):
+		Person.__init__(self, grade)
+	def get_grade(self):
+		t = Counter(self.grade).most_common(4)
+		L = len(t)
+		i = 0
+		while i < (L-1):
+			print("{}: {}".format(t[i][0], t[i][1]), end = ', ')
+			i += 1
+		print("{}: {}".format(t[L-1][0], t[L-1][1]))
+		 
 
-	def get_details(self):
-		return "{} teaches {}".format(self.name, ','.join(self.papers))
+if __name__ == '__main__':
+	if sys.argv[1] == 'teacher':
+		teacher1 = Teacher(sys.argv[2])
+		teacher1.get_grade()
+	if sys.argv[1] == 'student':
+		student1 = Student(sys.argv[2])
+		student1.get_grade()
 
-person1 = Person('Sachin')
-student1 = Student('Kushal', 'CSE', 2005)
-teacher1 = Teacher('Prashad', ['C', 'C++'])
+#person1 = Person('Sachin')
+#student1 = Student('Kushal', 'CSE', 2005)
 
-print(person1.get_details())
-print(student1.get_details())
-print(teacher1.get_details())
-
+#print(person1.get_details())
+#print(student1.get_details())
+#print(teacher1.get_details())
