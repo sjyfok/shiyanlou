@@ -16,7 +16,13 @@ class Student(Person):
         	Person.__init__(self, grade)
 
 	def get_grade(self):
-		print("")
+		c = Counter(self.grade)
+		c.most_common(4)
+		s = ''.join(sorted(c.elements()))
+		L = len(s)
+		pos = s.find('D')
+		print("Pass: {}, Fail: {}".format(pos, L-pos))
+	
 
 class Teacher(Person):
 	def __init__(self, grade):
@@ -39,9 +45,3 @@ if __name__ == '__main__':
 		student1 = Student(sys.argv[2])
 		student1.get_grade()
 
-#person1 = Person('Sachin')
-#student1 = Student('Kushal', 'CSE', 2005)
-
-#print(person1.get_details())
-#print(student1.get_details())
-#print(teacher1.get_details())
