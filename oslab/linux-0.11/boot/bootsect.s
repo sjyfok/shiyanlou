@@ -241,6 +241,9 @@ kill_motor:
 sectors:
 	.word 0
 
+!inf_loop:
+!	jmp inf_loop
+
 msg1:
 	.byte 13,10
 	.ascii "Sunix is booting ..."
