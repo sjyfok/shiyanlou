@@ -175,6 +175,9 @@ int main(int argc, char ** argv)
 		i += c;
 	}
 	
+//	fprintf(stderr,"%s\n",argv[3]);
+	if(strcmp(argv[3], "none"))
+	{
 	if ((id=open(argv[3],O_RDONLY,0))<0)
 		die("Unable to open 'system'");
 //	if (read(id,buf,GCC_HEADER) != GCC_HEADER)
@@ -188,5 +191,6 @@ int main(int argc, char ** argv)
 	fprintf(stderr,"System is %d bytes.\n",i);
 	if (i > SYS_SIZE*16)
 		die("System is too big");
+	}
 	return(0);
 }

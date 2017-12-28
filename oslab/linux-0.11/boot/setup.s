@@ -29,12 +29,27 @@ begbss:
 
 entry start
 start:
+! disp msg "Now we are in SETUP"
+
 
 ! ok, the read went well so we get current cursor position and save it for
 ! posterity.
 
 	mov	ax,#INITSEG	! this is done in bootsect already, but...
 	mov	ds,ax
+
+	mov	ah,#0x03		! read cursor pos
+	xor	bh,bh
+	int	0x10
+	
+	mov	cx,#25
+	mov	bx,#0x0007		! page 0, attribute 7 (normal)
+	mov	bp,#msg1
+	mov	ax,#0x1301		! write string, move cursor
+	int	0x10
+infloop:
+	jmp	infloop
+
 	mov	ah,#0x03	! read cursor pos
 	xor	bh,bh
 	int	0x10		! save it in known place, con_init fetches
@@ -221,6 +236,11 @@ gdt_48:
 	.word	0x800		! gdt limit=2048, 256 GDT entries
 	.word	512+gdt,0x9	! gdt base = 0X9xxxx
 	
+msg1:
+	.byte 13,10
+	.ascii "Now we are in SETUP"
+	.byte 13,10,13,10
+
 .text
 endtext:
 .data
