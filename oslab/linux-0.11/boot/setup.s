@@ -50,18 +50,52 @@ start:
 	mov	bp,#setupmsg
 	mov	ax,#0x1301		! write string, move cursor
 	int	0x10
-!infloop:
-!	jmp	infloop
+	
 
 	mov	ah,#0x03	! read cursor pos
 	xor	bh,bh
 	int	0x10		! save it in known place, con_init fetches
 	mov	[0],dx		! it from 0x90000.
-! Get memory size (extended mem, kB)
 
+	mov	ah,#0x03		! read cursor pos
+	xor	bh,bh
+	int	0x10
+	
+	mov	cx,#11
+	mov	bx,#0x0007
+	mov	bp,#Cursor
+	mov	ax,#0x1301
+	int 0x10
+
+	mov 	bp,#0
+	call 	print_hex
+	call	print_nl
+
+! Get memory size (extended mem, kB)
+	
 	mov	ah,#0x88
 	int	0x15
 	mov	[2],ax
+
+	mov	ah,#0x03		! read cursor pos
+	xor	bh,bh
+	int	0x10
+	
+	mov	cx,#12
+	mov	bx,#0x0007
+	mov	bp,#Memory
+	mov	ax,#0x1301
+	int 0x10
+
+	mov 	bp,#2
+	call 	print_hex
+	call	print_nl
+infloop:
+	jmp	infloop
+
+
+
+
 
 ! Get video-card data:
 
@@ -218,6 +252,34 @@ empty_8042:
 	jnz	empty_8042	! yes - loop
 	ret
 
+	
+
+
+	
+print_hex:
+	mov 	cx,#4
+	mov	dx,(bp)
+print_digit:
+	rol	dx,#4
+	mov	ax,#0xe0f
+	and	al,dl
+	add	al,#0x30
+	cmp	al, #0x3a
+	jl	outp
+	add	al,#0x07
+outp:
+	int	0x10
+	loop	print_digit
+	ret
+
+print_nl:
+	mov	ax,#0xe0d
+	int	0x10
+	mov	al,#0xa
+	int	0x10
+	ret
+
+
 gdt:
 	.word	0,0,0,0		! dummy
 
@@ -244,6 +306,17 @@ setupmsg:
 	.ascii "Now we are in SETUP"
 	.byte 13,10,13,10
 
+Cursor:
+	.ascii "Cursor POS:"
+Memory:
+	.ascii "Memory SIZE:"
+Cyls:
+	.ascii "Cyls:"
+Heads:
+	.ascii "Heads:"
+Sectrors:
+	.ascii "Sectors:"
+	.byte 13,10,13,10
 
 .text
 endtext:
