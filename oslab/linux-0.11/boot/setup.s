@@ -65,7 +65,7 @@ start:
 	mov	bx,#0x0007
 	mov	bp,#Cursor
 	mov	ax,#0x1301
-	int 0x10
+	int 	0x10
 
 	mov 	bp,#0
 	call 	print_hex
@@ -90,8 +90,6 @@ start:
 	mov 	bp,#2
 	call 	print_hex
 	call	print_nl
-infloop:
-	jmp	infloop
 
 
 
@@ -125,6 +123,57 @@ infloop:
 	rep
 	movsb
 
+	mov	ax,#INITSEG
+	mov	ds,ax
+
+	mov	ax,#SETUPSEG	! modify the sigment
+	mov	es,ax
+
+	mov	ah,#0x03		! read cursor pos
+	xor	bh,bh
+	int	0x10
+	
+	mov	cx,#5
+	mov	bx,#0x0007
+	mov	bp,#Cyls
+	mov	ax,#0x1301
+	int	0x10
+
+	mov	bp,#0x0080
+	call 	print_hex
+	call	print_nl
+
+	mov	ah,#0x03		! read cursor pos
+	xor	bh,bh
+	int	0x10
+	
+	mov	cx,#6
+	mov	bx,#0x0007
+	mov	bp,#Heads
+	mov	ax,#0x1301
+	int	0x10
+
+	mov	bp,#0x0084
+	call 	print_hex
+	call	print_nl
+		
+
+	mov	ah,#0x03		! read cursor pos
+	xor	bh,bh
+	int	0x10
+	
+	mov	cx,#8
+	mov	bx,#0x0007
+	mov	bp,#Sectors
+	mov	ax,#0x1301
+	int	0x10
+
+	mov	bp,#0x0086
+	call 	print_hex
+	call	print_nl
+
+infloop:
+	jmp	infloop
 ! Get hd1 data
 
 	mov	ax,#0x0000
@@ -314,9 +363,8 @@ Cyls:
 	.ascii "Cyls:"
 Heads:
 	.ascii "Heads:"
-Sectrors:
+Sectors:
 	.ascii "Sectors:"
-	.byte 13,10,13,10
 
 .text
 endtext:
