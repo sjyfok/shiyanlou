@@ -153,7 +153,7 @@ start:
 	mov	ax,#0x1301
 	int	0x10
 
-	mov	bp,#0x0084
+	mov	bp,#0x0082
 	call 	print_hex
 	call	print_nl
 		
@@ -168,7 +168,7 @@ start:
 	mov	ax,#0x1301
 	int	0x10
 
-	mov	bp,#0x0086
+	mov	bp,#0x008E
 	call 	print_hex
 	call	print_nl
 
