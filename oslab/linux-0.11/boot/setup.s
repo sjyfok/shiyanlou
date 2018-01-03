@@ -171,9 +171,11 @@ start:
 	mov	bp,#0x008E
 	call 	print_hex
 	call	print_nl
+	call 	print_nl
+	call 	print_nl
 
-infloop:
-	jmp	infloop
+!infloop:
+!	jmp	infloop
 ! Get hd1 data
 
 	mov	ax,#0x0000
