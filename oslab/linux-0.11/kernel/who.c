@@ -26,8 +26,9 @@ int sys_whoami(char *name, int size)
 	}
 	else
 	{
-		errno = EINVAL;
-		return -1;
+		//ierrno = EINVAL;
+		//printk("kernel errno = %d\r\n", errno);
+		return -EINVAL;
 	}
 }
 
@@ -41,8 +42,10 @@ int sys_iam(const char *name)
 	}
 	if (get_fs_byte(name+i) != 0)
 	{
-		errno = EINVAL;
-		return -1;
+		sys_name[0] = 0;
+		//errno = EINVAL;
+		//printk("kernel errno = %d\r\n", errno);
+		return -EINVAL;
 	}
 	else
 	{
