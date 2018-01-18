@@ -15,7 +15,7 @@ expected3="Richard Stallman"
 echo Testing string:$string1
 ./iam "$string1"
 result=`./whoami`
-if [ "$result" = "$expected1" ]; then
+if [ "$result"="$expected1" ]; then
 	echo PASS.
 else
 	score1=0
@@ -26,7 +26,7 @@ score=$score1
 echo Testing string:$string2
 ./iam "$string2"
 result=`./whoami`
-if [ "$result" = "$expected2" ]; then
+if [ "$result"="$expected2" ]; then
 	echo PASS.
 else
 	score2=0
@@ -37,7 +37,7 @@ score=$score+$score2
 echo Testing string:$string3
 ./iam "$string3"
 result=`./whoami`
-if [ "$result" = "$expected3" ]; then
+if [ "$result"="$expected3" ]; then
 	echo PASS.
 else
 	score3=0
