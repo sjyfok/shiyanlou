@@ -9,6 +9,30 @@ void cpuio_bound(int last, int cpu_time, int io_time);
 
 int main(int argc, char * argv[])
 {
+	int pid = 0;
+	
+	pid = fork();
+	if (pid == 0)
+	{
+		cpuio_bound(10, 1, 0);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		cpuio_bound(10, 0, 1);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		cpuio_bound(10, 1, 1);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		cpuio_bound(10, 1, 9);
+	}
+	if (pid)
+		wait();
 	return 0;
 }
 
