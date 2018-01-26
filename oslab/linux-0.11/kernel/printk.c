@@ -39,3 +39,50 @@ int printk(const char *fmt, ...)
 		::"r" (i):"ax","cx","dx");
 	return i;
 }
+
+static char logbuf[1024];
+int fprintk(int fd, const char *fmt, ...)
+{
+	va_list args;
+	int count;
+	struct file *file;
+	struct m_inode *inode;
+
+	va_start(args, fmt);
+	count = vsprintf(logbuf, fmt, args);
+	va_end(args);
+
+	if (fd < 3)
+	{
+		__asm__("push %%fs\n\t"
+			"push %%ds\n\t"
+			"pop %%fs\n\t"
+			"pushl %0\n\t"
+			"pushl $logbuf\n\t"
+			"pushl %1\n\t"
+			"call sys_write\n\t"
+			"addl $8,%%esp\n\t"
+			"popl %0\n\t"
+			"pop %%fs"
+			::"r"(count), "r"(fd):"ax","cx","dx");
+	}
+	else
+	{
+		if (!(file=task[0]->filp[fd]))
+			return 0;
+		inode=file->f_inode;
+		__asm__("push %%fs\n\t"
+			"push %%ds\n\t"
+			"pop %%fs\n\t"
+			"pushl %0\n\t"
+			"pushl $logbuf\n\t"
+			"pushl %1\n\t"
+			"pushl %2\n\t"
+			"call file_write\n\t"
+			"addl $12,%%esp\n\t"
+			"popl %0\n\t"
+			"pop %%fs"
+			::"r"(count),"r"(file),"r"(inode):"ax","cx","dx");
+	}
+	return count;
+}
