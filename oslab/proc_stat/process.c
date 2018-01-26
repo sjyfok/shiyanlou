@@ -10,7 +10,8 @@ void cpuio_bound(int last, int cpu_time, int io_time);
 int main(int argc, char * argv[])
 {
 	int pid = 0;
-	
+	int status = 0;
+
 	pid = fork();
 	if (pid == 0)
 	{
@@ -32,7 +33,7 @@ int main(int argc, char * argv[])
 		cpuio_bound(10, 1, 9);
 	}
 	if (pid)
-		wait();
+		wait(&status);
 	return 0;
 }
 
