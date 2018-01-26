@@ -13,6 +13,7 @@
 #include <stddef.h>
 
 #include <linux/kernel.h>
+#include <linux/sched.h>
 
 static char buf[1024];
 
