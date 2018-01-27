@@ -144,6 +144,7 @@ void schedule(void)
 int sys_pause(void)
 {
 	current->state = TASK_INTERRUPTIBLE;
+	fprintk(3, "%ld\t%c\t%ld\n", current->pid, 'W', jiffies);
 	schedule();
 	return 0;
 }
@@ -159,9 +160,15 @@ void sleep_on(struct task_struct **p)
 	tmp = *p;
 	*p = current;
 	current->state = TASK_UNINTERRUPTIBLE;
+
+	fprintk(3, "%ld\t%c\t%ld\n", current->pid, 'W', jiffies);
+
 	schedule();
 	if (tmp)
+	{
+		fprintk(3, "%ld\t%c\t%ld\n", tmp->pid, 'R', jiffies);
 		tmp->state=0;
+	}
 }
 
 void interruptible_sleep_on(struct task_struct **p)
@@ -175,14 +182,23 @@ void interruptible_sleep_on(struct task_struct **p)
 	tmp=*p;
 	*p=current;
 repeat:	current->state = TASK_INTERRUPTIBLE;
+
+	fprintk(3, "%ld\t%c\t%ld\n", current->pid, 'W', jiffies);
+
 	schedule();
 	if (*p && *p != current) {
 		(**p).state=0;
+		
+		fprintk(3, "%ld\t%c\t%ld\n", (**p).pid, 'R', jiffies);
+		
 		goto repeat;
 	}
 	*p=NULL;
 	if (tmp)
+	{
+		fprintk(3, "%ld\t%c\t%ld\n", tmp->pid, 'R', jiffies);
 		tmp->state=0;
+	}
 }
 
 void wake_up(struct task_struct **p)
