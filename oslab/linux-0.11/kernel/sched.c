@@ -116,7 +116,12 @@ void schedule(void)
 				}
 			if (((*p)->signal & ~(_BLOCKABLE & (*p)->blocked)) &&
 			(*p)->state==TASK_INTERRUPTIBLE)
+			{
+
+				fprintk(3, "%ld\t%c\t%ld\n", (*p)->pid, 'J', jiffies);
+
 				(*p)->state=TASK_RUNNING;
+			}
 		}
 
 /* this is the scheduler proper: */
