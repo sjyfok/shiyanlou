@@ -143,6 +143,7 @@ void schedule(void)
 				(*p)->counter = ((*p)->counter >> 1) +
 						(*p)->priority;
 	}
+	fprintk(3, "%ld\t%c\t%ld\n", (*p)->pid, 'R', jiffies);
 	switch_to(next);
 }
 
@@ -171,7 +172,7 @@ void sleep_on(struct task_struct **p)
 	schedule();
 	if (tmp)
 	{
-		fprintk(3, "%ld\t%c\t%ld\n", tmp->pid, 'R', jiffies);
+		fprintk(3, "%ld\t%c\t%ld\n", tmp->pid, 'J', jiffies);
 		tmp->state=0;
 	}
 }
@@ -194,14 +195,14 @@ repeat:	current->state = TASK_INTERRUPTIBLE;
 	if (*p && *p != current) {
 		(**p).state=0;
 		
-		fprintk(3, "%ld\t%c\t%ld\n", (**p).pid, 'R', jiffies);
+		fprintk(3, "%ld\t%c\t%ld\n", (**p).pid, 'J', jiffies);
 		
 		goto repeat;
 	}
 	*p=NULL;
 	if (tmp)
 	{
-		fprintk(3, "%ld\t%c\t%ld\n", tmp->pid, 'R', jiffies);
+		fprintk(3, "%ld\t%c\t%ld\n", tmp->pid, 'J', jiffies);
 		tmp->state=0;
 	}
 }
@@ -209,6 +210,7 @@ repeat:	current->state = TASK_INTERRUPTIBLE;
 void wake_up(struct task_struct **p)
 {
 	if (p && *p) {
+		fprintk(3, "%ld\t%c\t%ld\n", (**p).pid, 'J', jiffies);
 		(**p).state=0;
 		*p=NULL;
 	}
