@@ -143,7 +143,8 @@ void schedule(void)
 				(*p)->counter = ((*p)->counter >> 1) +
 						(*p)->priority;
 	}
-	fprintk(3, "%ld\t%c\t%ld\n", (*p)->pid, 'R', jiffies);
+	if (task[next]->pid != current->pid)
+		fprintk(3, "%ld\t%c\t%ld\n", task[next]->pid, 'R', jiffies);
 	switch_to(next);
 }
 
