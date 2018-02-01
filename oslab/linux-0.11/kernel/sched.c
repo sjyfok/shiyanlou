@@ -144,14 +144,20 @@ void schedule(void)
 						(*p)->priority;
 	}
 	if (task[next]->pid != current->pid)
+	{
 		fprintk(3, "%ld\t%c\t%ld\n", task[next]->pid, 'R', jiffies);
+		fprintk(3, "%ld\t%c\t%ld\n", current->pid, 'J', jiffies);
+	}
 	switch_to(next);
 }
 
 int sys_pause(void)
 {
 	current->state = TASK_INTERRUPTIBLE;
-	fprintk(3, "%ld\t%c\t%ld\n", current->pid, 'W', jiffies);
+	if (current->pid != 0)
+	{
+		fprintk(3, "%ld\t%c\t%ld\n", current->pid, 'W', jiffies);
+	}
 	schedule();
 	return 0;
 }
