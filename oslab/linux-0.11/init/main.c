@@ -140,6 +140,7 @@ void main(void)		/* This really IS void, no error here. */
 	(void) dup(0);
 	(void) dup(0);
 	(void) open("/var/process.log", O_CREAT|O_TRUNC|O_WRONLY, 0666);
+	sys_nice(10);
 	if (!fork()) {		/* we count on this going ok */
 		init();
 	}
